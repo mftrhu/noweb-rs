@@ -36,20 +36,21 @@ Documentation chunks are unnamed, and start with
 ## The program
 
 <<main.rs>>=
-<<External crates>>
-<<Use declarations>>
 
-<<Tangling>>
-
-<<Weaving>>
-
-<<Parsing>>
-
-fn main() {
-    <<Parse command-line arguments>>
-    <<Dispatch subcommands>>
-}
-@
+    <<External crates>>
+    <<Use declarations>>
+        
+        <<Tangling>>
+    
+    <<Weaving>>
+    
+    <<Parsing>>
+    
+    fn main() {
+        <<Parse command-line arguments>>
+        <<Dispatch subcommands>>
+    }
+    @
 
 ## Command-line arguments parsing
 
@@ -59,33 +60,35 @@ line arguments.
 [clap]:
 
 <<Parse command-line arguments>>=
-let app = clap::App::new("noweb-rs")
-    .version("0.1.0")
-    .author("mftrhu")
-    .help("");
-@
+
+    let app = clap::App::new("noweb-rs")
+        .version("0.1.0")
+        .author("mftrhu")
+        .help("");
+    @
 
 <<Dispatch subcommands>>=
-let matches = app.get_matches();
 
-match matches.subcommand() {
-    ("tangle", Some(tangle_matches)) => {
-        let infile = tangle_matches.value_of("INPUT").unwrap();
-        let infile = String::from(infile);
-        let chunk = tangle_matches.value_of("CHUNK").unwrap();
-        let chunk = String::from(chunk);
-        let chunks = parse(infile);
-
-        tangle(&chunks, chunk, String::from(""));
-    },
-    ("weave", Some(weave_matches))=> {
-        let infile = weave_matches.value_of("INPUT").unwrap();
-        let infile = String::from(infile);
-        let chunks = parse(infile);
-
-        weave(&chunks);
-    },
-    ("", None) => (),
-    _ => unreachable!()
-}
-@
+    let matches = app.get_matches();
+    
+    match matches.subcommand() {
+        ("tangle", Some(tangle_matches)) => {
+            let infile = tangle_matches.value_of("INPUT").unwrap();
+            let infile = String::from(infile);
+            let chunk = tangle_matches.value_of("CHUNK").unwrap();
+            let chunk = String::from(chunk);
+            let chunks = parse(infile);
+    
+            tangle(&chunks, chunk, String::from(""));
+        },
+        ("weave", Some(weave_matches))=> {
+            let infile = weave_matches.value_of("INPUT").unwrap();
+            let infile = String::from(infile);
+            let chunks = parse(infile);
+    
+            weave(&chunks);
+        },
+        ("", None) => (),
+        _ => unreachable!()
+    }
+    @

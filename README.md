@@ -33,9 +33,27 @@ Documentation chunks are unnamed, and start with
 
 ## Tangling and weaving
 
+### Tangling
+
+**Usage:** `noweb-rs tangle FILE CHUNK_NAME`
+
+To **tangle** a noweb source file is to extract a given code chunk from it, recursively embedding the referenced chunks as to create the full program.
+
+### Weaving
+
+**Usage:** `noweb-rs weave FILE`
+
+To **weave** a noweb source file is to create a document from it (in Markdown format for now), containing both the code and the documentation chunks.
+
+### Enumerating chunks
+
+**Usage:** `noweb-rs chunks FILE`
+
+By calling the subcommand `chunks`, `noweb-rs` will parse the input file, looking for any named chunks, to print their name on the standard output.  This can come in handy to know which chunk to tangle from an unknown file without having to read it.
+
 ## The program
 
-<<main.rs>>=
+`<<main.rs>>=`
 
     <<External crates>>
     <<Use declarations>>
@@ -57,9 +75,9 @@ Documentation chunks are unnamed, and start with
 **noweb-rs** will use the [clap][] library for parsing of the command
 line arguments.
 
-[clap]:
+[clap]: https://clap.rs/
 
-<<Parse command-line arguments>>=
+`<<Parse command-line arguments>>=`
 
     let app = clap::App::new("noweb-rs")
         .version("0.1.0")
@@ -67,7 +85,7 @@ line arguments.
         .help("");
     @
 
-<<Dispatch subcommands>>=
+`<<Dispatch subcommands>>=`
 
     let matches = app.get_matches();
     

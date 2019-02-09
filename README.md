@@ -53,12 +53,14 @@ By calling the subcommand `chunks`, `noweb-rs` will parse the input file, lookin
 
 ## The program
 
+The Rust source code for `noweb-rs` can be written using `noweb-rs` itself.
+
 `<<main.rs>>=`
 
     <<External crates>>
     <<Use declarations>>
-        
-        <<Tangling>>
+    
+    <<Tangling>>
     
     <<Weaving>>
     

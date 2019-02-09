@@ -6,3 +6,4 @@ authors = ["mftrhu"]
 [dependencies]
 regex = "0.2"
 clap = "2.29"
+colored = "1.7"

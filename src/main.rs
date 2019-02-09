@@ -7,6 +7,9 @@ use regex::Regex;
 extern crate clap;
 use clap::{App,Arg,SubCommand,AppSettings};
 
+extern crate colored;
+use colored::*;
+
 struct Chunk {
     name: Option<String>,
     contents: Vec<String>
@@ -48,7 +51,7 @@ fn tangle(chunks: &Vec<Chunk>, name: String, indent: String) {
             }
         },
         None => {
-            println!("chunk {} not found", &name);
+            eprintln!("{} chunk '{}' not found", "warning:".yellow().bold(), &name);
         }
     }
 }
@@ -169,7 +172,7 @@ fn main() {
             let chunk = tangle_matches.value_of("CHUNK").unwrap();
             let chunk = String::from(chunk);
             let chunks = parse(infile);
-            
+
             tangle(&chunks, chunk, String::from(""));
         },
         ("weave", Some(weave_matches))=> {

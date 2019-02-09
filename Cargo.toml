@@ -1,0 +1,8 @@
+[package]
+name = "noweb-rs"
+version = "0.1.1"
+authors = ["mftrhu"]
+
+[dependencies]
+regex = "0.2"
+clap = "2.29"

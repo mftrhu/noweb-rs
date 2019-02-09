@@ -29,37 +29,10 @@ impl Chunk {
     }
 }
 
-/*
-fn find<'a>(chunks: &'a Vec<Chunk>, name: &'a String) -> Option<&'a Chunk> {
-    for chunk in chunks {
-        if chunk.name.is_some() &&
-           chunk.name.clone().unwrap() == *name {
-            return Some(chunk)
-        }
-    }
-    None
-}*/
-
-/*fn find(chunks: &Vec<Chunk>, name: &String) -> Option<Chunk> {
-    for chunk in &chunks {
-        match chunk.name {
-            Some(ref chunk_name) => if chunk_name == name {
-                return Some(*chunk.clone())
-            },
-            None => ()
-        }
-        /*if chunk.name.is_some() &&
-           chunk.name.unwrap() == *name {
-            return Some(chunk)
-        }*/
-    }
-    None
-}*/
 
 fn tangle(chunks: &Vec<Chunk>, name: String, indent: String) {
     let embedded = Regex::new(r"^(\s*)<<([^>]+)>>\s*$").unwrap();
 
-    /*match find(&chunks, &name) {*/
     match chunks.iter().find(|&c| c.name == Some(name.clone())) {
         Some(chunk) => for line in &chunk.contents {
             if embedded.is_match(&line) {
@@ -148,6 +121,12 @@ fn main() {
         .version("0.1.1")
         .author("mftrhu")
         .about("Parses, tangles and weaves literate programming sources in the noWeb format.")
+        .subcommand(SubCommand::with_name("chunks")
+             .about("Prints out a list of all the chunks in the given noweb source")
+             .arg(Arg::with_name("INPUT")
+                 .help("The input file to use")
+                 .required(true)
+                 .index(1)))
         .subcommand(SubCommand::with_name("tangle")
             .about("Extracts a code chunk from the given noweb source")
             .arg(Arg::with_name("INPUT")
@@ -168,12 +147,29 @@ fn main() {
     let matches = app.get_matches();
 
     match matches.subcommand() {
+        ("chunks", Some(chunks_matches)) => {
+            let infile = chunks_matches.value_of("INPUT").unwrap();
+            let infile = String::from(infile);
+            let chunks = parse(infile);
+
+            // Print out the names of all the chunks in the file
+            for chunk in chunks {
+                match chunk.name {
+                    Some(name) => {
+                        println!("{}", name);
+                    },
+                    None => {
+                    }
+                }
+            }
+        },
         ("tangle", Some(tangle_matches)) => {
             let infile = tangle_matches.value_of("INPUT").unwrap();
             let infile = String::from(infile);
             let chunk = tangle_matches.value_of("CHUNK").unwrap();
             let chunk = String::from(chunk);
             let chunks = parse(infile);
+            
             tangle(&chunks, chunk, String::from(""));
         },
         ("weave", Some(weave_matches))=> {
